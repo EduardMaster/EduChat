@@ -13,12 +13,12 @@ import net.eduard.api.server.EduardPlugin;
 import net.eduard.chat.manager.ChatChannel;
 import net.eduard.chat.manager.ChatManager;
 
-public class ChatPlugin extends EduardPlugin {
+public class Main extends EduardPlugin {
 
-	private static ChatPlugin plugin;
+	private static Main plugin;
 	private ChatManager chat;
 	private Map<Player, Player> lastPrivateMessage = new HashMap<>();
-	public static ChatPlugin getInstance() {
+	public static Main getInstance() {
 		return plugin;
 	}
 	public void reload() {

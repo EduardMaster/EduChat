@@ -5,7 +5,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 
 import net.eduard.api.lib.manager.CommandManager;
-import net.eduard.chat.ChatPlugin;
+import net.eduard.chat.Main;
 
 public class ChatReloadCommand extends CommandManager {
 
@@ -16,7 +16,7 @@ public class ChatReloadCommand extends CommandManager {
 	@Override
 	public boolean onCommand(CommandSender sender, Command command,
 			String label, String[] args) {
-		ChatPlugin.getInstance().reload();
+		Main.getInstance().reload();
 		sender.sendMessage("§aSistema de chat recarregado");
 		return true;
 	}
