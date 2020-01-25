@@ -17,7 +17,7 @@ public class ChatReloadCommand extends CommandManager {
 	public boolean onCommand(CommandSender sender, Command command,
 			String label, String[] args) {
 		Main.getInstance().reload();
-		sender.sendMessage("§aSistema de chat recarregado");
+		sender.sendMessage("Â§aSistema de chat recarregado");
 		return true;
 	}
 }

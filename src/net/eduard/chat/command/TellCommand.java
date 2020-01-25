@@ -1,6 +1,7 @@
 
 package net.eduard.chat.command;
 
+import net.eduard.api.lib.modules.Extra;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -11,9 +12,9 @@ import net.eduard.chat.Main;
 
 public class TellCommand extends CommandManager {
 
-	public String message = "§aPara: §f$target$> §7$message";
-	public String messageTarget = "§aDe: §f$player$> §7$message";
-	public String messageDisabled = "§cDe: §f$player desativou as mensagens";
+	public String message = "Â§aPara: Â§f$target$> Â§7$message";
+	public String messageTarget = "Â§aDe: Â§f$player$> Â§7$message";
+	public String messageDisabled = "Â§cDe: Â§f$player desativou as mensagens";
 
 	public TellCommand() {
 		super("tell", "privado", "pm", "pv", "t");
@@ -29,7 +30,7 @@ public class TellCommand extends CommandManager {
 			} else {
 				if (Mine.existsPlayer(sender, args[0])) {
 					Player target = Mine.getPlayer(args[0]);
-					String message = Mine.getText(1, args);
+					String message = Extra.getText(1, args);
 					if (!Main.getInstance().getChat().getTellDisabled().contains(target)) {
 						sender.sendMessage(messageDisabled.replace("$player", target.getName()));
 					} else {

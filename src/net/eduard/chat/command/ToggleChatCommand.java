@@ -13,9 +13,9 @@ import net.eduard.api.lib.manager.CommandManager;
 public class ToggleChatCommand extends CommandManager {
 
 	public boolean chatEnabled = true;
-	public String messageOn = "§6Chat ativado!";
-	public String messageOff = "§6Chat foi temporariamente desativado!";
-	public String messageDisabled = "§cChat desativado!";
+	public String messageOn = "Â§6Chat ativado!";
+	public String messageOff = "Â§6Chat foi temporariamente desativado!";
+	public String messageDisabled = "Â§cChat desativado!";
 	public String chatPerm = "togglechat.bypass";
 	
 	 

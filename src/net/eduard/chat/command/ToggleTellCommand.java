@@ -24,10 +24,10 @@ public class ToggleTellCommand extends CommandManager {
 			Player p = (Player) sender;
 			if (Main.getInstance().getChat().getTellDisabled().contains(p)) {
 				Main.getInstance().getChat().getTellDisabled().remove(p);
-				p.sendMessage("§cVocê desativou mensagens privadas");
+				p.sendMessage("Â§cVocÃª desativou mensagens privadas");
 			}else {
 				Main.getInstance().getChat().getTellDisabled().add(p);
-				p.sendMessage("§aVocê ativou mensagens privadas");
+				p.sendMessage("Â§aVocÃª ativou mensagens privadas");
 			}
 			
 		}

@@ -12,7 +12,7 @@ public class ColorCommand extends CommandManager {
 
 	public ColorCommand() {
 		super("color", "cor");
-		setUsage("§c/cor <cor>");
+		setUsage("Â§c/cor <cor>");
 	}
 
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
@@ -29,12 +29,12 @@ public class ColorCommand extends CommandManager {
 
 				if (cor.equalsIgnoreCase("reset")) {
 					Main.getInstance().getChat().getColors().put(p, "");
-					p.sendMessage("§aCor removida com sucesso!");
+					p.sendMessage("Â§aCor removida com sucesso!");
 					return true;
 				}
 
 				Main.getInstance().getChat().getColors().put(p, cor);
-				p.sendMessage("§aCor alterada com sucesso.");
+				p.sendMessage("Â§aCor alterada com sucesso.");
 				p.playSound(p.getLocation(), Sound.LEVEL_UP, 1, 1);
 
 			}
