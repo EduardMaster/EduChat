@@ -1,4 +1,4 @@
-package net.eduard.chat.manager;
+package net.eduard.chat.core;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -14,7 +14,6 @@ import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import net.eduard.api.lib.modules.Mine;
 import net.eduard.api.lib.manager.EventsManager;
 import net.eduard.api.lib.modules.Extra;
-import net.eduard.api.lib.storage.StorageAttributes;
 
 public class ChatManager extends EventsManager  {
 	private String format = "(channel) (player): (color) (message)";

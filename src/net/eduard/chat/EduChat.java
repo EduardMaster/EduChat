@@ -10,15 +10,15 @@ import net.eduard.api.lib.modules.Mine;
 import net.eduard.api.lib.manager.CommandManager;
 import net.eduard.api.lib.storage.StorageAPI;
 import net.eduard.api.server.EduardPlugin;
-import net.eduard.chat.manager.ChatChannel;
-import net.eduard.chat.manager.ChatManager;
+import net.eduard.chat.core.ChatChannel;
+import net.eduard.chat.core.ChatManager;
 
-public class Main extends EduardPlugin {
+public class EduChat extends EduardPlugin {
 
-	private static Main plugin;
+	private static EduChat plugin;
 	private ChatManager chat;
 	private Map<Player, Player> lastPrivateMessage = new HashMap<>();
-	public static Main getInstance() {
+	public static EduChat getInstance() {
 		return plugin;
 	}
 	public void reload() {
@@ -26,8 +26,8 @@ public class Main extends EduardPlugin {
 			chat.unregisterListener();
 		}
 		
-		if (config.contains("Chat")) {
-			chat = (ChatManager) config.get("Chat");
+		if (getConfigs().contains("Chat")) {
+			chat = (ChatManager) getConfigs().get("Chat");
 			StorageAPI.updateReferences();
 		}else {
 			chat = new ChatManager();
@@ -38,8 +38,8 @@ public class Main extends EduardPlugin {
 		
 	}
 	public void save() {
-		config.set("Chat", chat);
-		config.saveConfig();
+		getConfigs().set("Chat", chat);
+		getConfigs().saveConfig();
 	}
 	
 	@Override

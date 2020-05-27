@@ -1,4 +1,4 @@
-package net.eduard.chat.manager;
+package net.eduard.chat.core;
 
 public enum ChatType {
 	SPIGOT, BUKKIT, FANCYFUL,

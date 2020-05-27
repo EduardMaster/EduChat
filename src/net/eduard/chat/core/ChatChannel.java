@@ -1,16 +1,15 @@
-package net.eduard.chat.manager;
+package net.eduard.chat.core;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Map.Entry;
 
+import net.eduard.chat.event.ChatMessageEvent;
 import org.bukkit.entity.Player;
 
 import net.eduard.api.lib.modules.Mine;
-import net.eduard.api.lib.storage.StorageAttributes;
 import net.eduard.api.lib.storage.Storable;
-import net.eduard.api.util.fancyful.FancyMessage;
+import net.eduard.api.lib.util.fancyful.FancyMessage;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
@@ -113,7 +112,7 @@ public class ChatChannel implements Storable {
 			for (Entry<String, String> entry : event.getTags().entrySet()) {
 				formato = formato.replace("("+entry.getKey().toLowerCase()+")" , entry.getValue());
 			}
-//			for (Entry<String, String> entry : event.getTags().entrySet()) {
+//			for (Entry<String, String> entry : listener.getTags().entrySet()) {
 //				formato = formato.replace(entry.getKey() , entry.getValue());
 //			}
 //			
@@ -207,18 +206,5 @@ public class ChatChannel implements Storable {
 
 
 
-
-
-@Override
-public Object restore(Map<String, Object> map) {
-	// TODO Auto-generated method stub
-	return null;
-}
-
-@Override
-public void store(Map<String, Object> map, Object object) {
-	// TODO Auto-generated method stub
-
-}
 
 }

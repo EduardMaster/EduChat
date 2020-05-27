@@ -1,10 +1,11 @@
-package net.eduard.chat.manager;
+package net.eduard.chat.event;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import net.eduard.chat.core.ChatChannel;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
@@ -63,7 +64,7 @@ public class ChatMessageEvent extends PlayerEvent implements Cancellable {
 		}
 		for (int i = 0; i < format.length(); i++) {
 			if (format.charAt(i) == '(') {
-				String tag = format.substring(i + 1).split(")")[0].toLowerCase();
+				String tag = format.substring(i + 1).split("}")[0].toLowerCase();
 				if (!this.tags.containsKey(tag))
 					this.tags.put(tag, "");
 			}
