@@ -113,7 +113,7 @@ public class ChatChannel implements Storable {
 				formato = formato.replace("("+entry.getKey().toLowerCase()+")" , entry.getValue());
 			}
 //			for (Entry<String, String> entry : listener.getTags().entrySet()) {
-//				formato = formato.replace(entry.getKey() , entry.getValue());
+//				formato = formato.replace(entry.getKey() , entry.getFieldValue());
 //			}
 //			
 			
