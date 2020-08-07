@@ -1,5 +1,6 @@
 package net.eduard.chat.core
 
+import net.eduard.api.lib.game.FakePlayer
 import net.eduard.api.lib.manager.EventsManager
 import net.eduard.api.lib.modules.Extra
 import net.eduard.api.lib.storage.Storable.StorageAttributes
@@ -19,18 +20,14 @@ class ChatManager : EventsManager() {
     var chatDefault: ChatChannel? = null
     var chatType = ChatType.BUKKIT
     var isChatEnabled = false
-    private val channels: MutableList<ChatChannel> = ArrayList()
-    var tellDisabled = ArrayList<OfflinePlayer>()
-    var colors: MutableMap<OfflinePlayer, String> = HashMap()
+    var channels = mutableListOf<ChatChannel>()
+    var tellDisabled = ArrayList<FakePlayer>()
+    var colors: MutableMap<FakePlayer, String> = HashMap()
     fun register(channel: ChatChannel) {
         if (channel.format.isEmpty()) {
             channel.format = format
         }
         channels.add(channel)
-    }
-
-    fun getChannels(): List<ChatChannel> {
-        return channels
     }
 
     fun unregister(channel: ChatChannel) {

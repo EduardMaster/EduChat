@@ -1,5 +1,6 @@
 package net.eduard.chat.command
 
+import net.eduard.api.lib.game.FakePlayer
 import net.eduard.api.lib.manager.CommandManager
 import net.eduard.api.lib.modules.Extra
 import net.eduard.api.lib.modules.Mine
@@ -19,11 +20,12 @@ class TellCommand : CommandManager("tell", "privado", "pm", "pv", "t") {
             } else {
                 if (Mine.existsPlayer(sender, args[0])) {
                     val target = Mine.getPlayer(args[0])
+                    val fakeTarget = FakePlayer(target)
                     val message = Extra.getText(1, *args)
-                    if (!EduChat.instance.chat.tellDisabled.contains(target)) {
+                    if (!EduChat.instance.chat.tellDisabled.contains(fakeTarget)) {
                         sender.sendMessage(ChatMessages.tellDisabled.replace("\$player", target.name))
                     } else {
-                        EduChat.instance.lastPrivateMessage[target] = p
+                        EduChat.instance.lastPrivateMessage[p] = target
                         sender.sendMessage(ChatMessages.tellTo
                                 .replace("\$target", target.name)
                                 .replace("$>", "").replace("\$message", message))

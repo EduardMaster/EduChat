@@ -1,5 +1,6 @@
 package net.eduard.chat.command
 
+import net.eduard.api.lib.game.FakePlayer
 import net.eduard.api.lib.manager.CommandManager
 import net.eduard.chat.EduChat
 import org.bukkit.Sound
@@ -16,11 +17,11 @@ class ColorCommand : CommandManager("color", "cor") {
             } else {
                 val cor = args[0]
                 if (cor.equals("reset", ignoreCase = true)) {
-                    EduChat.instance.chat.colors[p] = ""
+                    EduChat.instance.chat.colors[FakePlayer(p)] = ""
                     p.sendMessage("§aCor removida com sucesso!")
                     return true
                 }
-                EduChat.instance.chat.colors[p] = cor
+                EduChat.instance.chat.colors[FakePlayer(p)] = cor
                 p.sendMessage("§aCor alterada com sucesso.")
                 p.playSound(p.location, Sound.LEVEL_UP, 1f, 1f)
             }

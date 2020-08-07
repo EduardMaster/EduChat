@@ -21,7 +21,7 @@ class EduChat : EduardPlugin() {
             chat.register(this)
             save()
         }
-        for (canal in chat.getChannels()) {
+        for (canal in chat.channels) {
             canal.manager = (chat)
         }
     }

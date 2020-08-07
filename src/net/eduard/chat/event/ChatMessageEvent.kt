@@ -6,7 +6,6 @@ import org.bukkit.entity.Player
 import org.bukkit.event.Cancellable
 import org.bukkit.event.HandlerList
 import org.bukkit.event.player.PlayerEvent
-import java.util.*
 
 class ChatMessageEvent(player: Player, channel: ChatChannel, message: String) : PlayerEvent(player), Cancellable {
     override fun getHandlers(): HandlerList {
@@ -20,6 +19,13 @@ class ChatMessageEvent(player: Player, channel: ChatChannel, message: String) : 
     var playersInChannel= mutableListOf<Player>()
     var onHoverText = mutableListOf<String>()
     private var cancelled = false
+    override fun isCancelled(): Boolean {
+        return cancelled
+    }
+
+    override fun setCancelled(cancel: Boolean) {
+        cancelled = cancel
+    }
     var channel: ChatChannel? = null
 
     init {
@@ -39,27 +45,21 @@ class ChatMessageEvent(player: Player, channel: ChatChannel, message: String) : 
     }
 
     fun resetTags() {
-        for (i in 0 until format!!.length) {
-            if (format!![i] == '{') {
-                val tag = format!!.substring(i + 1).split("}".toRegex()).toTypedArray()[0].toLowerCase()
+        for (i in format.indices) {
+            if (format[i] == '{') {
+                val tag = format.substring(i + 1).split("}".toRegex()).toTypedArray()[0].toLowerCase()
                 if (!tags.containsKey(tag)) tags[tag] = ""
             }
         }
-        for (i in 0 until format!!.length) {
-            if (format!![i] == '(') {
-                val tag = format!!.substring(i + 1).split("}".toRegex()).toTypedArray()[0].toLowerCase()
+        for (i in format.indices) {
+            if (format[i] == '(') {
+                val tag = format.substring(i + 1).split("\\)".toRegex()).toTypedArray()[0].toLowerCase()
                 if (!tags.containsKey(tag)) tags[tag] = ""
             }
         }
     }
 
-    override fun isCancelled(): Boolean {
-        return cancelled
-    }
 
-    override fun setCancelled(cancel: Boolean) {
-        cancelled = cancel
-    }
 
 
     companion object {
