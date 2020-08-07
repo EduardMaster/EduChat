@@ -62,6 +62,7 @@ class ChatChannel() : Storable<Any?> {
         var formato = event.format
         for ((key, value) in event.tags) {
             formato = formato.replace("{" + key.toLowerCase() + "}", value)
+            formato = formato.replace("(" + key.toLowerCase() + ")", value)
         }
 
 //

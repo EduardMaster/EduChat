@@ -5,10 +5,12 @@ import net.eduard.api.server.EduardPlugin
 import net.eduard.chat.command.*
 import net.eduard.chat.core.ChatChannel
 import net.eduard.chat.core.ChatManager
+import net.eduard.chat.listener.ChatListener
 import org.bukkit.entity.Player
 import java.util.*
 
 class EduChat : EduardPlugin() {
+
     lateinit var chat: ChatManager
     var lastPrivateMessage: MutableMap<Player, Player> = HashMap()
     override fun reload() {
@@ -36,15 +38,17 @@ class EduChat : EduardPlugin() {
         isFree = true
         super.onEnable()
         reload()
-        ChatReloadCommand().register()
-        ColorCommand().register()
-        ResponseCommand().register()
-        TellCommand().register()
-        ToggleTellCommand().register()
-        ToggleChatCommand().register()
+        ChatReloadCommand().registerCommand(this)
+        ColorCommand().registerCommand(this)
+        ResponseCommand().registerCommand(this)
+        TellCommand().registerCommand(this)
+        ToggleTellCommand().registerCommand(this)
+        ToggleChatCommand().registerCommand(this)
+        ChatListener().register(this)
     }
 
     companion object {
         lateinit var instance: EduChat
+        var chatEnabled = true
     }
 }
