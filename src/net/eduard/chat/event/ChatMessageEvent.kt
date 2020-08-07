@@ -1,0 +1,72 @@
+package net.eduard.chat.event
+
+import net.eduard.chat.core.ChatChannel
+import org.bukkit.ChatColor
+import org.bukkit.entity.Player
+import org.bukkit.event.Cancellable
+import org.bukkit.event.HandlerList
+import org.bukkit.event.player.PlayerEvent
+import java.util.*
+
+class ChatMessageEvent(player: Player, channel: ChatChannel, message: String) : PlayerEvent(player), Cancellable {
+    override fun getHandlers(): HandlerList {
+        return handlerList
+    }
+
+    var tags = mutableMapOf<String, String>()
+    var message = ""
+    var format: String = "Formato"
+    var onClickCommand: String? = null
+    var playersInChannel= mutableListOf<Player>()
+    var onHoverText = mutableListOf<String>()
+    private var cancelled = false
+    var channel: ChatChannel? = null
+
+    init {
+        this.message = message
+        if (player.hasPermission("chat.color")) this.message = ChatColor.translateAlternateColorCodes('&', message)
+        format = channel.format
+        playersInChannel.addAll(channel.getPlayers(player))
+        resetTags()
+    }
+
+    fun setTagValue(tag: String, value: String) {
+        tags[tag] = value
+    }
+
+    fun getTagValue(tag: String): String? {
+        return tags[tag]
+    }
+
+    fun resetTags() {
+        for (i in 0 until format!!.length) {
+            if (format!![i] == '{') {
+                val tag = format!!.substring(i + 1).split("}".toRegex()).toTypedArray()[0].toLowerCase()
+                if (!tags.containsKey(tag)) tags[tag] = ""
+            }
+        }
+        for (i in 0 until format!!.length) {
+            if (format!![i] == '(') {
+                val tag = format!!.substring(i + 1).split("}".toRegex()).toTypedArray()[0].toLowerCase()
+                if (!tags.containsKey(tag)) tags[tag] = ""
+            }
+        }
+    }
+
+    override fun isCancelled(): Boolean {
+        return cancelled
+    }
+
+    override fun setCancelled(cancel: Boolean) {
+        cancelled = cancel
+    }
+
+
+    companion object {
+
+        @JvmStatic
+        val handlerList = HandlerList()
+    }
+
+
+}
