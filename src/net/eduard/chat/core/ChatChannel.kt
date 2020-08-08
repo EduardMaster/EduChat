@@ -64,11 +64,12 @@ class ChatChannel() {
         if (event.isCancelled) return
         val players = event.playersInChannel
         var formato = event.format
+        formato = Mine.getReplacers(formato,player);
         for ((key, value) in event.tags) {
             formato = formato.replace("{" + key.toLowerCase() + "}", value)
             formato = formato.replace("(" + key.toLowerCase() + ")", value)
         }
-        formato = Mine.getReplacers(formato,player);
+
         val newList = mutableListOf<String>()
         for (line in event.onHoverText) {
             newList.add(Mine.getReplacers(line, player))
