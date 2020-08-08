@@ -68,6 +68,7 @@ class ChatChannel() {
             formato = formato.replace("{" + key.toLowerCase() + "}", value)
             formato = formato.replace("(" + key.toLowerCase() + ")", value)
         }
+        formato = Mine.getReplacers(formato,player);
         val newList = mutableListOf<String>()
         for (line in event.onHoverText) {
             newList.add(Mine.getReplacers(line, player))
@@ -90,9 +91,10 @@ class ChatChannel() {
 
 
                 val textBuilder = ComponentBuilder("")
-                for (line in event.onHoverText) {
-                    textBuilder.append(line)
-                }
+
+
+                textBuilder.append(event.onHoverText.joinToString("\n"))
+
                 val hoverEvent = HoverEvent(HoverEvent.Action.SHOW_TEXT, textBuilder.create())
                 text.hoverEvent = hoverEvent
 
