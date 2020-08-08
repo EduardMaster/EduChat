@@ -3,8 +3,6 @@ package net.eduard.chat.core
 import net.eduard.api.lib.game.FakePlayer
 import net.eduard.api.lib.manager.EventsManager
 import net.eduard.api.lib.modules.Extra
-import net.eduard.api.lib.storage.Storable.StorageAttributes
-import org.bukkit.OfflinePlayer
 import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority
 import org.bukkit.event.player.AsyncPlayerChatEvent
@@ -12,12 +10,12 @@ import org.bukkit.event.player.PlayerCommandPreprocessEvent
 import java.util.*
 
 class ChatManager : EventsManager() {
-    var format = "(channel) (player): (color) (message)"
-    var messageChatDisabled = "&cChat desabilitado tempariamente!"
-    var messageChatPermission = "§cVoc§ n§o tem permiss§o para falar neste Chat!"
+    var format = "(channel)§r(player)§8:§r(color)(message)"
 
-    @StorageAttributes(reference = true)
-    var chatDefault: ChatChannel? = null
+
+    val chatDefault: ChatChannel
+        get() = channels[0]
+
     var chatType = ChatType.BUKKIT
     var isChatEnabled = false
     var channels = mutableListOf<ChatChannel>()
@@ -34,10 +32,16 @@ class ChatManager : EventsManager() {
         channels.remove(channel)
     }
 
+    init {
+        register(ChatChannel("local", "", "§8(§e§lL§8)", "", "l"))
+        register(ChatChannel("global", "", "§8(§6§lG§8)", "", "g"))
+        register(ChatChannel("staff", "", "&8(&dSTAFF&8)", "", "sc"))
+    }
+
     @EventHandler(priority = EventPriority.HIGHEST)
     fun onChat(event: AsyncPlayerChatEvent) {
         event.isCancelled = true
-        chatDefault!!.chat(event.player, event.message, chatType)
+        chatDefault.chat(event.player, event.message, chatType)
     }
 
     @EventHandler
@@ -45,12 +49,12 @@ class ChatManager : EventsManager() {
         val msg = event.message
         val cmd = Extra.getCommandName(msg)
         for (channel in channels) {
-            if (Extra.startWith(cmd, "/" + channel.name)) {
+            if (Extra.startWith("/" + channel.name, cmd)) {
                 channel.chat(event.player, msg.replaceFirst(cmd.toRegex(), ""), chatType)
                 event.isCancelled = true
                 break
             }
-            if (Extra.startWith(cmd, "/" + channel.command)) {
+            if (Extra.startWith("/" + channel.command, cmd)) {
                 channel.chat(event.player, msg.replaceFirst(cmd.toRegex(), ""), chatType)
                 event.isCancelled = true
                 break
@@ -58,10 +62,4 @@ class ChatManager : EventsManager() {
         }
     }
 
-    init {
-        val canal = ChatChannel("local", "", "§e§l(L) ", "", "l")
-        chatDefault = canal
-        register(canal)
-        register(ChatChannel("global", "", "§6§l(G)", "", "g"))
-    }
 }

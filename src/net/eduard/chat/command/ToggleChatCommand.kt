@@ -7,16 +7,19 @@ import org.bukkit.command.Command
 import org.bukkit.command.CommandSender
 
 class ToggleChatCommand : CommandManager("chat", "togglechat") {
+    init{
+        description ="Ativar ou desativar o chat"
+    }
     var messageOn = "§6Chat ativado!"
     var messageOff = "§6Chat foi temporariamente desativado!"
 
     override fun onCommand(sender: CommandSender, command: Command,
                            label: String, args: Array<String>): Boolean {
-        if (EduChat.chatEnabled) {
-            EduChat.chatEnabled = false
+        if (EduChat.instance.chat.isChatEnabled) {
+            EduChat.instance.chat.isChatEnabled = false
             Mine.broadcast(messageOff)
         } else {
-            EduChat.chatEnabled = true
+            EduChat.instance.chat.isChatEnabled = true
             Mine.broadcast(messageOn)
         }
         return true

@@ -1,9 +1,7 @@
 package net.eduard.chat
 
-import net.eduard.api.lib.storage.StorageAPI
 import net.eduard.api.server.EduardPlugin
 import net.eduard.chat.command.*
-import net.eduard.chat.core.ChatChannel
 import net.eduard.chat.core.ChatManager
 import net.eduard.chat.listener.ChatListener
 import org.bukkit.entity.Player
@@ -11,18 +9,22 @@ import java.util.*
 
 class EduChat : EduardPlugin() {
 
+    companion object {
+        lateinit var instance: EduChat
+
+    }
     lateinit var chat: ChatManager
     var lastPrivateMessage: MutableMap<Player, Player> = HashMap()
     override fun reload() {
         if (configs.contains("chat")) {
             chat = configs["chat", ChatManager::class.java]
-            StorageAPI.updateReferences()
+
         } else {
             chat = ChatManager()
-            chat.register(ChatChannel("staff", "", "(&2STAFF)", "", "sc"))
-            chat.register(this)
+
             save()
         }
+        chat.register(this)
         for (canal in chat.channels) {
             canal.manager = (chat)
         }
@@ -47,8 +49,4 @@ class EduChat : EduardPlugin() {
         ChatListener().register(this)
     }
 
-    companion object {
-        lateinit var instance: EduChat
-        var chatEnabled = true
-    }
 }

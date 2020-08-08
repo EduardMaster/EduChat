@@ -3,7 +3,6 @@ package net.eduard.chat.core
 import net.eduard.api.lib.game.FakePlayer
 import net.eduard.api.lib.modules.Mine
 import net.eduard.api.lib.modules.VaultAPI
-import net.eduard.api.lib.storage.Storable
 import net.eduard.chat.util.FancyMessage
 import net.eduard.chat.event.ChatMessageEvent
 import net.md_5.bungee.api.chat.ClickEvent
@@ -18,7 +17,7 @@ import java.util.*
  *
  * @author Eduard-PC
  */
-class ChatChannel() : Storable<Any?> {
+class ChatChannel() {
     @Transient
     lateinit var manager: ChatManager
     var name: String = "canaldetexto"
@@ -29,7 +28,8 @@ class ChatChannel() : Storable<Any?> {
     var isGlobal = true
     var permission: String = "permissao.falar"
     var command: String = "/canal"
-    var disabled = false
+    var onClick = "/tell \$player "
+    var onHover = mutableListOf("§aVida: \$player_health")
 
 
     constructor(name: String, format: String, prefix: String, suffix: String, command: String) : this() {
@@ -42,19 +42,23 @@ class ChatChannel() : Storable<Any?> {
     }
 
     fun chat(player: Player, message: String, chatType: ChatType) {
-        if (!player.hasPermission(permission)) {
-            player.sendMessage(message)
+        if (message.isEmpty()) {
+            player.sendMessage("§cNão pode enviar mensagem vazia")
             return
         }
-        val cor = manager.colors[FakePlayer(player)]?: ""
+        if (!player.hasPermission(permission)) {
+            player.sendMessage(ChatMessages.chatPermission)
+            return
+        }
+        val cor = manager.colors[FakePlayer(player)] ?: ""
         val event = ChatMessageEvent(player, this, message)
-        event.setTagValue("message", message)
+        event.setTagValue("message", event.message)
         event.setTagValue("channel-prefix", prefix)
         event.setTagValue("channel-suffix", suffix)
         event.setTagValue("player", player.name)
-        event.setTagValue("channel" , prefix)
-        event.setTagValue("player-prefix" , VaultAPI.getPlayerGroupPrefix(player.name))
-        event.setTagValue("player_color", cor)
+        event.setTagValue("channel", prefix)
+        event.setTagValue("player-group-prefix", VaultAPI.getPlayerGroupPrefix(player.name))
+        event.setTagValue("player-color", cor)
         event.setTagValue("color", cor)
         Mine.callEvent(event)
         if (event.isCancelled) return
@@ -64,38 +68,48 @@ class ChatChannel() : Storable<Any?> {
             formato = formato.replace("{" + key.toLowerCase() + "}", value)
             formato = formato.replace("(" + key.toLowerCase() + ")", value)
         }
+        val newList = mutableListOf<String>()
+        for (line in event.onHoverText) {
+            newList.add(Mine.getReplacers(line, player))
+        }
+        event.onHoverText = newList
 
 //
-        if (chatType == ChatType.BUKKIT) {
-            for (p in players) {
-                p.sendMessage(formato)
+        when (chatType) {
+            ChatType.BUKKIT -> {
+                for (p in players) {
+                    p.sendMessage(formato)
+                }
             }
-        } else if (chatType == ChatType.SPIGOT) {
-            val text = TextComponent(formato)
-            if (event.onClickCommand != null) {
-                val clickEvent = ClickEvent(ClickEvent.Action.RUN_COMMAND, event.onClickCommand)
+            ChatType.SPIGOT -> {
+                val text = TextComponent(formato)
+
+                val clickEvent = ClickEvent(ClickEvent.Action.SUGGEST_COMMAND,
+                        event.onClickCommand.replace("\$player", player.name))
                 text.clickEvent = clickEvent
-            }
-            if (event.onHoverText.isNotEmpty()) {
+
+
                 val textBuilder = ComponentBuilder("")
                 for (line in event.onHoverText) {
                     textBuilder.append(line)
                 }
                 val hoverEvent = HoverEvent(HoverEvent.Action.SHOW_TEXT, textBuilder.create())
                 text.hoverEvent = hoverEvent
+
+                for (p in players) {
+                    p.spigot().sendMessage(text)
+                }
             }
-            for (p in Mine.getPlayers()) {
-                p.spigot().sendMessage(text)
-            }
-        } else if (chatType == ChatType.FANCYFUL) {
-            val text = FancyMessage(formato)
-            if (event.onClickCommand != null) {
-                text.command(event.onClickCommand)
-            }
-            if (event.onHoverText.isNotEmpty()) {
+            ChatType.FANCYFUL -> {
+                val text = FancyMessage(formato)
+
+                text.suggest(event.onClickCommand.replace("\$player", player.name))
+
+
                 text.tooltip(event.onHoverText)
+
+                text.send(players)
             }
-            text.send(players)
         }
     }
 
