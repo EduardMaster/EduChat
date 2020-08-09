@@ -13,7 +13,8 @@ class EduChat : EduardPlugin() {
         lateinit var instance: EduChat
 
     }
-     var chat: ChatManager = ChatManager()
+
+    var chat: ChatManager = ChatManager()
     var lastPrivateMessage: MutableMap<Player, Player> = HashMap()
     override fun reload() {
         if (configs.contains("chat")) {
@@ -22,7 +23,7 @@ class EduChat : EduardPlugin() {
         } else {
             save()
         }
-        chat.register(this)
+
         for (canal in chat.channels) {
             canal.manager = (chat)
         }

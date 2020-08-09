@@ -9,7 +9,7 @@ import org.bukkit.event.player.AsyncPlayerChatEvent
 import org.bukkit.event.player.PlayerCommandPreprocessEvent
 import java.util.*
 
-class ChatManager : EventsManager() {
+class ChatManager  {
     var format = "(channel)§r(player)§8:§r(color)(message)"
 
 
@@ -38,28 +38,5 @@ class ChatManager : EventsManager() {
         register(ChatChannel("staff", "", "&8(&dSTAFF&8)", "", "sc"))
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST)
-    fun onChat(event: AsyncPlayerChatEvent) {
-        event.isCancelled = true
-        chatDefault.chat(event.player, event.message, chatType)
-    }
-
-    @EventHandler
-    fun onCommand(event: PlayerCommandPreprocessEvent) {
-        val msg = event.message
-        val cmd = Extra.getCommandName(msg)
-        for (channel in channels) {
-            if (Extra.startWith("/" + channel.name, cmd)) {
-                channel.chat(event.player, msg.replaceFirst(cmd.toRegex(), ""), chatType)
-                event.isCancelled = true
-                break
-            }
-            if (Extra.startWith("/" + channel.command, cmd)) {
-                channel.chat(event.player, msg.replaceFirst(cmd.toRegex(), ""), chatType)
-                event.isCancelled = true
-                break
-            }
-        }
-    }
 
 }

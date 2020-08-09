@@ -90,12 +90,18 @@ class ChatChannel() {
             }
             ChatType.SPIGOT -> {
                 val text = TextComponent(finalMessage)
-                if (finalMessage.length > 70){
-                    text.text = finalMessage.substring(0..70)
-                    text.addExtra(ChatColor.getLastColors(text.text)+finalMessage.substring(70))
+                val bigLimit = 120
+                val smallLimit = 70
+                 if (finalMessage.length > bigLimit){
+                    text.text = finalMessage.substring(0..smallLimit)
+                    val secondText = ChatColor.getLastColors(text.text)+finalMessage.substring(smallLimit..bigLimit)
+                    text.addExtra(secondText)
+                    text.addExtra(ChatColor.getLastColors(secondText)+finalMessage.substring(bigLimit))
 
+                } else if (finalMessage.length > smallLimit){
+                    text.text = finalMessage.substring(0..smallLimit)
+                    text.addExtra(ChatColor.getLastColors(text.text)+finalMessage.substring(smallLimit))
                 }
-
 
 
                 val clickEvent = ClickEvent(ClickEvent.Action.SUGGEST_COMMAND,
