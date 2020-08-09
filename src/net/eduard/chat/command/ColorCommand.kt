@@ -28,13 +28,13 @@ class ColorCommand : CommandManager("color", "cor") {
                     p.sendMessage("§aCor removida com sucesso!")
                     return true
                 }
-                if (cor.length != 2){
+                if (cor.length != 1){
                     p.sendMessage("§cVocê pode escolher apenas 1 cor§f de [A-F] e [1-9]");
                     return true;
                 }
 
                 cor = "§$cor";
-                EduChat.instance.chat.colors[FakePlayer(p)] = cor.formatColors()
+                EduChat.instance.chat.colors[FakePlayer(p)] = cor
                 p.sendMessage("§aCor alterada com sucesso.")
                 p.playSound(p.location, Sound.LEVEL_UP, 1f, 1f)
             }
