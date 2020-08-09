@@ -13,15 +13,13 @@ class EduChat : EduardPlugin() {
         lateinit var instance: EduChat
 
     }
-    lateinit var chat: ChatManager
+     var chat: ChatManager = ChatManager()
     var lastPrivateMessage: MutableMap<Player, Player> = HashMap()
     override fun reload() {
         if (configs.contains("chat")) {
             chat = configs["chat", ChatManager::class.java]
 
         } else {
-            chat = ChatManager()
-
             save()
         }
         chat.register(this)

@@ -1,7 +1,9 @@
 package net.eduard.chat.core
 
 import net.eduard.api.lib.game.FakePlayer
+import net.eduard.api.lib.modules.Extra
 import net.eduard.api.lib.modules.Mine
+import net.eduard.api.lib.modules.SpigotAPI
 import net.eduard.api.lib.modules.VaultAPI
 import net.eduard.chat.util.FancyMessage
 import net.eduard.chat.event.ChatMessageEvent
@@ -9,6 +11,7 @@ import net.md_5.bungee.api.chat.ClickEvent
 import net.md_5.bungee.api.chat.ComponentBuilder
 import net.md_5.bungee.api.chat.HoverEvent
 import net.md_5.bungee.api.chat.TextComponent
+import org.bukkit.ChatColor
 import org.bukkit.entity.Player
 import java.util.*
 
@@ -63,12 +66,14 @@ class ChatChannel() {
         Mine.callEvent(event)
         if (event.isCancelled) return
         val players = event.playersInChannel
-        var formato = event.format
-        formato = Mine.getReplacers(formato,player);
+        var finalMessage = event.format
+        finalMessage = Mine.getReplacers(finalMessage,player);
         for ((key, value) in event.tags) {
-            formato = formato.replace("{" + key.toLowerCase() + "}", value)
-            formato = formato.replace("(" + key.toLowerCase() + ")", value)
+            finalMessage = finalMessage.replace("{" + key.toLowerCase() + "}", value)
+            finalMessage = finalMessage.replace("(" + key.toLowerCase() + ")", value)
         }
+
+
 
         val newList = mutableListOf<String>()
         for (line in event.onHoverText) {
@@ -80,11 +85,18 @@ class ChatChannel() {
         when (chatType) {
             ChatType.BUKKIT -> {
                 for (p in players) {
-                    p.sendMessage(formato)
+                    p.sendMessage(finalMessage)
                 }
             }
             ChatType.SPIGOT -> {
-                val text = TextComponent(formato)
+                val text = TextComponent(finalMessage)
+                if (finalMessage.length > 70){
+                    text.text = finalMessage.substring(0..70)
+                    text.addExtra(ChatColor.getLastColors(text.text)+finalMessage.substring(70))
+
+                }
+
+
 
                 val clickEvent = ClickEvent(ClickEvent.Action.SUGGEST_COMMAND,
                         event.onClickCommand.replace("\$player", player.name))
@@ -104,7 +116,7 @@ class ChatChannel() {
                 }
             }
             ChatType.FANCYFUL -> {
-                val text = FancyMessage(formato)
+                val text = FancyMessage(finalMessage)
 
                 text.suggest(event.onClickCommand.replace("\$player", player.name))
 
