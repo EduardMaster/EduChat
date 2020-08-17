@@ -11,11 +11,7 @@ import org.bukkit.event.player.PlayerCommandPreprocessEvent
 
 class ChatListener : EventsManager(){
 
-    @EventHandler(priority = EventPriority.HIGHEST)
-    fun onChat(event: AsyncPlayerChatEvent) {
-        event.isCancelled = true
-        EduChat.instance.chat.chatDefault.chat(event.player, event.message, EduChat.instance.chat.chatType)
-    }
+
 
     @EventHandler
     fun onCommand(event: PlayerCommandPreprocessEvent) {
@@ -41,5 +37,10 @@ class ChatListener : EventsManager(){
             e.isCancelled = true
             p.sendMessage(ChatMessages.chatDisabled)
         }
+    }
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    fun onChat(event: AsyncPlayerChatEvent) {
+        event.isCancelled = true
+        EduChat.instance.chat.chatDefault.chat(event.player, event.message, EduChat.instance.chat.chatType)
     }
 }
