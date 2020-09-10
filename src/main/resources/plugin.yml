@@ -1,7 +1,7 @@
 name: EduChat
 description: Sistema de chat completo
 main: net.eduard.chat.EduChat
-version: 1.0
+version: ${project.version}
 authors: [Eduard]
 author: Eduard
 depend: [EduardAPI]

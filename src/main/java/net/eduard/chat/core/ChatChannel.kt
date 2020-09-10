@@ -1,12 +1,10 @@
 package net.eduard.chat.core
 
-import net.eduard.api.lib.game.FakePlayer
-import net.eduard.api.lib.modules.Extra
+import net.eduard.api.lib.modules.FakePlayer
 import net.eduard.api.lib.modules.Mine
-import net.eduard.api.lib.modules.SpigotAPI
 import net.eduard.api.lib.modules.VaultAPI
-import net.eduard.chat.util.FancyMessage
 import net.eduard.chat.event.ChatMessageEvent
+import net.eduard.chat.util.FancyMessage
 import net.md_5.bungee.api.chat.ClickEvent
 import net.md_5.bungee.api.chat.ComponentBuilder
 import net.md_5.bungee.api.chat.HoverEvent
