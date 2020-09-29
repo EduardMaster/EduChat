@@ -31,7 +31,7 @@ class ChatListener : EventsManager(){
         }
     }
     @EventHandler
-    fun event(e: AsyncPlayerChatEvent) {
+    fun chat(e: AsyncPlayerChatEvent) {
         val p = e.player
         if (!EduChat.instance.chat.isChatEnabled && !p.hasPermission(ChatMessages.chatDisabledBypassPermission)) {
             e.isCancelled = true
