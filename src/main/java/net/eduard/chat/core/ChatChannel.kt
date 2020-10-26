@@ -115,8 +115,8 @@ class ChatChannel() {
                 val hoverEvent = HoverEvent(HoverEvent.Action.SHOW_TEXT, textBuilder.create())
                 text.hoverEvent = hoverEvent
 
-                for (p in players) {
-                    p.spigot().sendMessage(text)
+                for (alvo in players) {
+                    alvo.spigot().sendMessage(text)
                 }
             }
             ChatType.FANCYFUL -> {
@@ -131,20 +131,21 @@ class ChatChannel() {
             }
         }
     }
+    val distanceSquared = distance*distance
 
     fun getPlayers(player: Player): List<Player> {
         val list: MutableList<Player> = ArrayList()
-        for (p in Mine.getPlayers()) {
+        for (alvo in Mine.getPlayers()) {
             if (!isGlobal) {
-                if (p.world != player.world) {
+                if (alvo.world != player.world) {
                     continue
                 }
                 if (distance > 0) {
-                    val newDistance = p.location.distance(player.location)
-                    if (newDistance > distance) continue
+                    val newDistance = alvo.location.distanceSquared(player.location)
+                    if (newDistance > distanceSquared) continue
                 }
             }
-            list.add(p)
+            list.add(alvo)
         }
         return list
     }

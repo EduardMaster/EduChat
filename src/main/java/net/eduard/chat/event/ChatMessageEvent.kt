@@ -29,7 +29,8 @@ class ChatMessageEvent(player: Player, var channel: ChatChannel, var message: St
 
     init {
 
-        if (player.hasPermission("chat.color")) this.message = this.message.formatColors()
+        if (player.hasPermission("chat.color"))
+            this.message = this.message.formatColors()
         format = channel.format
         playersInChannel.addAll(channel.getPlayers(player))
         onClickCommand = channel.onClick
@@ -70,7 +71,6 @@ class ChatMessageEvent(player: Player, var channel: ChatChannel, var message: St
 
 
     companion object {
-
         @JvmStatic
         val handlerList = HandlerList()
     }

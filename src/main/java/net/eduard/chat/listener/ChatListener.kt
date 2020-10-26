@@ -30,16 +30,16 @@ class ChatListener : EventsManager(){
             }
         }
     }
-    @EventHandler
-    fun chat(e: AsyncPlayerChatEvent) {
-        val p = e.player
-        if (!EduChat.instance.chat.isChatEnabled && !p.hasPermission(ChatMessages.chatDisabledBypassPermission)) {
-            e.isCancelled = true
-            p.sendMessage(ChatMessages.chatDisabled)
-        }
-    }
+
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     fun onChat(event: AsyncPlayerChatEvent) {
+        val player = event.player
+        if (!EduChat.instance.chat.isChatEnabled &&
+            !player.hasPermission(ChatMessages.chatDisabledBypassPermission)) {
+            event.isCancelled = true
+            player.sendMessage(ChatMessages.chatDisabled)
+            return
+        }
         event.isCancelled = true
         EduChat.instance.chat.chatDefault.chat(event.player, event.message, EduChat.instance.chat.chatType)
     }
