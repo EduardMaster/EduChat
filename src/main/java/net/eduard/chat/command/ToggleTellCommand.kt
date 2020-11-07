@@ -1,6 +1,6 @@
 package net.eduard.chat.command
 
-import lib.modules.FakePlayer
+import net.eduard.api.lib.modules.FakePlayer
 import net.eduard.api.lib.manager.CommandManager
 import net.eduard.chat.EduChat
 import net.eduard.chat.core.ChatMessages
@@ -16,7 +16,7 @@ class ToggleTellCommand : CommandManager("toggletell") {
                            label: String, args: Array<String>): Boolean {
         if (sender is Player) {
             val p = sender
-            val fake= lib.modules.FakePlayer(p)
+            val fake=FakePlayer(p)
             if (!EduChat.instance.chat.tellDisabled.contains(fake)) {
                 EduChat.instance.chat.tellDisabled.add(fake)
                 p.sendMessage(ChatMessages.tellOff)

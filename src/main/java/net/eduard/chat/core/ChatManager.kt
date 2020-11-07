@@ -1,8 +1,8 @@
 package net.eduard.chat.core
 
-import lib.modules.FakePlayer
+import net.eduard.api.lib.modules.FakePlayer
 import net.eduard.api.lib.manager.EventsManager
-import lib.modules.Extra
+import net.eduard.api.lib.modules.Extra
 import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority
 import org.bukkit.event.player.AsyncPlayerChatEvent

@@ -1,6 +1,6 @@
 package net.eduard.chat.command
 
-import lib.modules.FakePlayer
+import net.eduard.api.lib.modules.FakePlayer
 import net.eduard.api.lib.kotlin.formatColors
 import net.eduard.api.lib.manager.CommandManager
 import net.eduard.chat.EduChat
