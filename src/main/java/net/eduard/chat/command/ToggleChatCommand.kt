@@ -1,7 +1,7 @@
 package net.eduard.chat.command
 
 import net.eduard.api.lib.manager.CommandManager
-import net.eduard.api.lib.modules.Mine
+import lib.modules.Mine
 import net.eduard.chat.EduChat
 import org.bukkit.command.Command
 import org.bukkit.command.CommandSender
@@ -17,10 +17,10 @@ class ToggleChatCommand : CommandManager("chat", "togglechat") {
                            label: String, args: Array<String>): Boolean {
         if (EduChat.instance.chat.isChatEnabled) {
             EduChat.instance.chat.isChatEnabled = false
-            Mine.broadcast(messageOff)
+            lib.modules.Mine.broadcast(messageOff)
         } else {
             EduChat.instance.chat.isChatEnabled = true
-            Mine.broadcast(messageOn)
+            lib.modules.Mine.broadcast(messageOn)
         }
         return true
     }

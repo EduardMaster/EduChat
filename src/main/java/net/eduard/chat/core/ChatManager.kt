@@ -1,8 +1,8 @@
 package net.eduard.chat.core
 
-import net.eduard.api.lib.modules.FakePlayer
+import lib.modules.FakePlayer
 import net.eduard.api.lib.manager.EventsManager
-import net.eduard.api.lib.modules.Extra
+import lib.modules.Extra
 import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority
 import org.bukkit.event.player.AsyncPlayerChatEvent
@@ -19,8 +19,8 @@ class ChatManager  {
     var chatType = ChatType.BUKKIT
     var isChatEnabled = false
     var channels = mutableListOf<ChatChannel>()
-    var tellDisabled = ArrayList<FakePlayer>()
-    var colors: MutableMap<FakePlayer, String> = HashMap()
+    var tellDisabled = ArrayList<lib.modules.FakePlayer>()
+    var colors: MutableMap<lib.modules.FakePlayer, String> = HashMap()
     fun register(channel: ChatChannel) {
         if (channel.format.isEmpty()) {
             channel.format = format

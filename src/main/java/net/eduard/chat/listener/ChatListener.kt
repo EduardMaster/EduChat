@@ -1,7 +1,7 @@
 package net.eduard.chat.listener
 
 import net.eduard.api.lib.manager.EventsManager
-import net.eduard.api.lib.modules.Extra
+import lib.modules.Extra
 import net.eduard.chat.EduChat
 import net.eduard.chat.core.ChatMessages
 import org.bukkit.event.EventHandler
@@ -16,14 +16,14 @@ class ChatListener : EventsManager(){
     @EventHandler
     fun onCommand(event: PlayerCommandPreprocessEvent) {
         val msg = event.message
-        val cmd = Extra.getCommandName(msg)
+        val cmd = lib.modules.Extra.getCommandName(msg)
         for (channel in EduChat.instance.chat.channels) {
-            if (Extra.startWith("/" + channel.name, cmd)) {
+            if (lib.modules.Extra.startWith("/" + channel.name, cmd)) {
                 channel.chat(event.player, msg.replaceFirst(cmd.toRegex(), ""), EduChat.instance.chat.chatType)
                 event.isCancelled = true
                 break
             }
-            if (Extra.startWith("/" + channel.command, cmd)) {
+            if (lib.modules.Extra.startWith("/" + channel.command, cmd)) {
                 channel.chat(event.player, msg.replaceFirst(cmd.toRegex(), ""), EduChat.instance.chat.chatType)
                 event.isCancelled = true
                 break

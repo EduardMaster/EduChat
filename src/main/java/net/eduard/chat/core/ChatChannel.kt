@@ -1,8 +1,8 @@
 package net.eduard.chat.core
 
-import net.eduard.api.lib.modules.FakePlayer
-import net.eduard.api.lib.modules.Mine
-import net.eduard.api.lib.modules.VaultAPI
+import lib.modules.FakePlayer
+import lib.modules.Mine
+import lib.modules.VaultAPI
 import net.eduard.chat.event.ChatMessageEvent
 import net.eduard.chat.util.FancyMessage
 import net.md_5.bungee.api.chat.ClickEvent
@@ -51,21 +51,21 @@ class ChatChannel() {
             player.sendMessage(ChatMessages.chatPermission)
             return
         }
-        val cor = manager.colors[FakePlayer(player)] ?: ""
+        val cor = manager.colors[lib.modules.FakePlayer(player)] ?: ""
         val event = ChatMessageEvent(player, this, message)
         event.setTagValue("message", event.message)
         event.setTagValue("channel-prefix", prefix)
         event.setTagValue("channel-suffix", suffix)
         event.setTagValue("player", player.name)
         event.setTagValue("channel", prefix)
-        event.setTagValue("player-group-prefix", VaultAPI.getPlayerGroupPrefix(player.name))
+        event.setTagValue("player-group-prefix", lib.modules.VaultAPI.getPlayerGroupPrefix(player.name))
         event.setTagValue("player-color", cor)
         event.setTagValue("color", cor)
-        Mine.callEvent(event)
+        lib.modules.Mine.callEvent(event)
         if (event.isCancelled) return
         val players = event.playersInChannel
         var finalMessage = event.format
-        finalMessage = Mine.getReplacers(finalMessage,player);
+        finalMessage = lib.modules.Mine.getReplacers(finalMessage,player);
         for ((key, value) in event.tags) {
             finalMessage = finalMessage.replace("{" + key.toLowerCase() + "}", value)
             finalMessage = finalMessage.replace("(" + key.toLowerCase() + ")", value)
@@ -75,7 +75,7 @@ class ChatChannel() {
 
         val newList = mutableListOf<String>()
         for (line in event.onHoverText) {
-            newList.add(Mine.getReplacers(line, player))
+            newList.add(lib.modules.Mine.getReplacers(line, player))
         }
         event.onHoverText = newList
 
@@ -135,7 +135,7 @@ class ChatChannel() {
 
     fun getPlayers(player: Player): List<Player> {
         val list: MutableList<Player> = ArrayList()
-        for (alvo in Mine.getPlayers()) {
+        for (alvo in lib.modules.Mine.getPlayers()) {
             if (!isGlobal) {
                 if (alvo.world != player.world) {
                     continue

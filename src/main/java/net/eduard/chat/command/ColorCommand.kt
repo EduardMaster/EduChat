@@ -1,6 +1,6 @@
 package net.eduard.chat.command
 
-import net.eduard.api.lib.modules.FakePlayer
+import lib.modules.FakePlayer
 import net.eduard.api.lib.kotlin.formatColors
 import net.eduard.api.lib.manager.CommandManager
 import net.eduard.chat.EduChat
@@ -24,7 +24,7 @@ class ColorCommand : CommandManager("color", "cor") {
             } else {
                 var cor = args[0]
                 if (cor.equals("reset", ignoreCase = true)) {
-                    EduChat.instance.chat.colors[FakePlayer(p)] = ""
+                    EduChat.instance.chat.colors[lib.modules.FakePlayer(p)] = ""
                     p.sendMessage("§aCor removida com sucesso!")
                     return true
                 }
@@ -34,7 +34,7 @@ class ColorCommand : CommandManager("color", "cor") {
                 }
 
                 cor = "§$cor";
-                EduChat.instance.chat.colors[FakePlayer(p)] = cor
+                EduChat.instance.chat.colors[lib.modules.FakePlayer(p)] = cor
                 p.sendMessage("§aCor alterada com sucesso.")
                 p.playSound(p.location, Sound.LEVEL_UP, 1f, 1f)
             }
