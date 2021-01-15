@@ -51,7 +51,7 @@ class ChatChannel() {
             player.sendMessage(ChatMessages.chatPermission)
             return
         }
-        val cor = manager.colors[lib.modules.FakePlayer(player)] ?: ""
+        val cor = manager.colors[FakePlayer(player)] ?: ""
         val event = ChatMessageEvent(player, this, message)
         event.setTagValue("message", event.message)
         event.setTagValue("channel-prefix", prefix)
@@ -135,7 +135,7 @@ class ChatChannel() {
 
     fun getPlayers(player: Player): List<Player> {
         val list: MutableList<Player> = ArrayList()
-        for (alvo inMine.getPlayers()) {
+        for (alvo in Mine.getPlayers()) {
             if (!isGlobal) {
                 if (alvo.world != player.world) {
                     continue
