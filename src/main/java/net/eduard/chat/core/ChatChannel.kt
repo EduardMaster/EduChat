@@ -4,7 +4,6 @@ import net.eduard.api.lib.modules.FakePlayer
 import net.eduard.api.lib.modules.Mine
 import net.eduard.api.lib.modules.VaultAPI
 import net.eduard.chat.event.ChatMessageEvent
-import net.eduard.chat.util.FancyMessage
 import net.md_5.bungee.api.chat.ClickEvent
 import net.md_5.bungee.api.chat.ComponentBuilder
 import net.md_5.bungee.api.chat.HoverEvent
@@ -119,16 +118,7 @@ class ChatChannel() {
                     alvo.spigot().sendMessage(text)
                 }
             }
-            ChatType.FANCYFUL -> {
-                val text = FancyMessage(finalMessage)
 
-                text.suggest(event.onClickCommand.replace("\$player", player.name))
-
-
-                text.tooltip(event.onHoverText)
-
-                text.send(players)
-            }
         }
     }
     val distanceSquared = distance*distance

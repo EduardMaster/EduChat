@@ -6,6 +6,8 @@
 .project
 .metadata
 .recommenders
+.gradle
+gradle
 bin/
 tmp/
 *.tmp
