@@ -20,7 +20,7 @@ final class JsonString implements JsonRepresentedObject, ConfigurationSerializab
 		_value = value == null ? null : value.toString();
 	}
 
-	@Override
+
 	public void writeJson(JsonWriter writer) throws IOException {
 		writer.value(getValue());
 	}

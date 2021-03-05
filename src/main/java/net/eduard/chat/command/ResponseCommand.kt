@@ -16,14 +16,14 @@ class ResponseCommand : CommandManager("response", "responder", "r") {
     }
     override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<String>): Boolean {
         if (Mine.onlyPlayer(sender)) {
-            val p = sender as Player
+            val player = sender as Player
             if (args.isEmpty()) {
                 sendUsage(sender)
             } else {
-                if (!EduChat.instance.lastPrivateMessage.containsKey(p)) {
-                    p.sendMessage(ChatMessages.noTell)
+                if (!EduChat.instance.lastPrivateMessage.containsKey(player)) {
+                    player.sendMessage(ChatMessages.noTell)
                 } else {
-                    val alvo = EduChat.instance.lastPrivateMessage[p]!!
+                    val alvo = EduChat.instance.lastPrivateMessage[player]!!
                     alvo.chat("/tell " + alvo.name + " " +Extra.getText(0, *args))
                 }
             }

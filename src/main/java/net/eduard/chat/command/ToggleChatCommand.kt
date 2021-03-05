@@ -20,7 +20,7 @@ class ToggleChatCommand : CommandManager("chat", "togglechat") {
            Mine.broadcast(messageOff)
         } else {
             EduChat.instance.chat.isChatEnabled = true
-           Mine.broadcast(messageOn)
+            Mine.broadcast(messageOn)
         }
         return true
     }

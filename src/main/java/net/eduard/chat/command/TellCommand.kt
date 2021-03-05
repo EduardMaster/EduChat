@@ -19,7 +19,7 @@ class TellCommand : CommandManager("tell", "privado", "pm", "pv", "t") {
 
     override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<String>): Boolean {
         if (Mine.onlyPlayer(sender)) {
-            val p = sender as Player
+            val player = sender as Player
             if (args.size < 2) {
                 sendUsage(sender)
             } else {
@@ -30,7 +30,7 @@ class TellCommand : CommandManager("tell", "privado", "pm", "pv", "t") {
                     if (EduChat.instance.chat.tellDisabled.contains(fakeTarget)) {
                         sender.sendMessage(ChatMessages.tellDisabled.replace("\$player", target.name))
                     } else {
-                        EduChat.instance.lastPrivateMessage[p] = target
+                        EduChat.instance.lastPrivateMessage[player] = target
                         sender.sendMessage(ChatMessages.tellTo
                                 .replace("\$target", target.name)
                                 .replace("$>", "").replace("\$message", message))
