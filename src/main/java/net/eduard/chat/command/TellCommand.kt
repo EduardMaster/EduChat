@@ -31,6 +31,7 @@ class TellCommand : CommandManager("tell", "privado", "pm", "pv", "t") {
                         sender.sendMessage(ChatMessages.tellDisabled.replace("\$player", target.name))
                     } else {
                         EduChat.instance.lastPrivateMessage[player] = target
+                        EduChat.instance.lastPrivateMessage[target] = player
                         sender.sendMessage(ChatMessages.tellTo
                                 .replace("\$target", target.name)
                                 .replace("$>", "").replace("\$message", message))

@@ -56,7 +56,7 @@ class ChatChannel() {
         event.setTagValue("channel-prefix", prefix)
         event.setTagValue("channel-suffix", suffix)
         event.setTagValue("player", player.name)
-        event.setTagValue("channel", prefix)
+        event.setTagValue("channel", name)
         event.setTagValue("player-group-prefix",VaultAPI.getPlayerGroupPrefix(player.name))
         event.setTagValue("player-color", cor)
         event.setTagValue("color", cor)
@@ -69,9 +69,6 @@ class ChatChannel() {
             finalMessage = finalMessage.replace("{" + key.toLowerCase() + "}", value)
             finalMessage = finalMessage.replace("(" + key.toLowerCase() + ")", value)
         }
-
-
-
         val newList = mutableListOf<String>()
         for (line in event.onHoverText) {
             newList.add(Mine.getReplacers(line, player))
@@ -115,6 +112,11 @@ class ChatChannel() {
                 text.hoverEvent = hoverEvent
 
                 for (alvo in players) {
+
+                    if (message.toLowerCase().contains(alvo.name.toLowerCase())){
+                        if (alvo != player)
+                        alvo.sendMessage("§aVocê foi mencionado pelo §f"+player.name)
+                    }
                     alvo.spigot().sendMessage(text)
                 }
             }

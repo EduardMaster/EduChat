@@ -1,2 +1,2 @@
-rootProject.name = "chat"
+rootProject.name = "EduChat"
 

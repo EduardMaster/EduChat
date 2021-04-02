@@ -4,7 +4,7 @@ plugins {
 }
 
 group = "net.eduard"
-version = "1.0-SNAPSHOT"
+version = "1.0"
 
 repositories {
     mavenLocal()
@@ -20,18 +20,19 @@ dependencies {
 
 }
 java.sourceCompatibility = JavaVersion.VERSION_1_8
+java.targetCompatibility = JavaVersion.VERSION_1_8
 
-tasks.withType<Jar>{
-    destinationDir = file("E:\\Tudo\\Minecraft - Server\\Servidor Teste\\plugins\\")
-}
-tasks.withType<JavaCompile>{
-    options.encoding = "UTF-8"
-}
 tasks {
     compileKotlin {
         kotlinOptions.jvmTarget = "1.8"
     }
+    compileJava{
+        options.encoding = "UTF-8"
+    }
     compileTestKotlin {
         kotlinOptions.jvmTarget = "1.8"
+    }
+    jar {
+        destinationDirectory.set(file("E:\\Tudo\\Minecraft - Server\\Servidor Teste\\plugins\\"))
     }
 }

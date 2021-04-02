@@ -14,6 +14,7 @@ class ResponseCommand : CommandManager("response", "responder", "r") {
         usage = "/responder <mensagen>"
         description = "Envia uma mensagem para a ultima pessoa que te mandou mensagem"
     }
+
     override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<String>): Boolean {
         if (Mine.onlyPlayer(sender)) {
             val player = sender as Player
@@ -24,7 +25,7 @@ class ResponseCommand : CommandManager("response", "responder", "r") {
                     player.sendMessage(ChatMessages.noTell)
                 } else {
                     val alvo = EduChat.instance.lastPrivateMessage[player]!!
-                    alvo.chat("/tell " + alvo.name + " " +Extra.getText(0, *args))
+                    player.chat("/tell " + alvo.name + " " + Extra.getText(0, *args))
                 }
             }
         }

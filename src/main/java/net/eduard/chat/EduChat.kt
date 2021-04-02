@@ -17,18 +17,22 @@ class EduChat : EduardPlugin() {
     var chat: ChatManager = ChatManager()
     var lastPrivateMessage: MutableMap<Player, Player> = HashMap()
     override fun reload() {
+        configs.reloadConfig()
         if (configs.contains("chat")) {
             chat = configs["chat", ChatManager::class.java]
-
         } else {
             save()
         }
-
         for (canal in chat.channels) {
             canal.manager = (chat)
         }
     }
 
+    override fun onDisable() {
+       // super.onDisable()
+        save()
+        super.unregisterCommands()
+    }
     override fun save() {
         configs["chat"] = chat
         configs.saveConfig()

@@ -9,25 +9,28 @@ import org.bukkit.event.EventPriority
 import org.bukkit.event.player.AsyncPlayerChatEvent
 import org.bukkit.event.player.PlayerCommandPreprocessEvent
 
-class ChatListener : EventsManager(){
-
+class ChatListener : EventsManager() {
 
 
     @EventHandler
     fun onCommand(event: PlayerCommandPreprocessEvent) {
         val msg = event.message
-        val cmd =Extra.getCommandName(msg)
+        val cmd = Extra.getCommandName(msg)
+        val player = event.player
         for (channel in EduChat.instance.chat.channels) {
-            if (Extra.startWith("/" + channel.name, cmd)) {
+            if (Extra.startWith("/" + channel.name, cmd) || Extra.startWith("/" + channel.command, cmd)) {
+                if (!EduChat.instance.chat.isChatEnabled &&
+                    !player.hasPermission(ChatMessages.chatDisabledBypassPermission)
+                ) {
+                    event.isCancelled = true
+                    player.sendMessage(ChatMessages.chatDisabled)
+                    return
+                }
                 channel.chat(event.player, msg.replaceFirst(cmd.toRegex(), ""), EduChat.instance.chat.chatType)
                 event.isCancelled = true
                 break
             }
-            if (Extra.startWith("/" + channel.command, cmd)) {
-                channel.chat(event.player, msg.replaceFirst(cmd.toRegex(), ""), EduChat.instance.chat.chatType)
-                event.isCancelled = true
-                break
-            }
+
         }
     }
 
@@ -35,7 +38,8 @@ class ChatListener : EventsManager(){
     fun onChat(event: AsyncPlayerChatEvent) {
         val player = event.player
         if (!EduChat.instance.chat.isChatEnabled &&
-            !player.hasPermission(ChatMessages.chatDisabledBypassPermission)) {
+            !player.hasPermission(ChatMessages.chatDisabledBypassPermission)
+        ) {
             event.isCancelled = true
             player.sendMessage(ChatMessages.chatDisabled)
             return

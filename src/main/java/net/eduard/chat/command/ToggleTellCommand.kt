@@ -15,14 +15,14 @@ class ToggleTellCommand : CommandManager("toggletell") {
     override fun onCommand(sender: CommandSender, command: Command,
                            label: String, args: Array<String>): Boolean {
         if (sender is Player) {
-            val p = sender
-            val fake=FakePlayer(p)
+            val player = sender
+            val fake=FakePlayer(player)
             if (!EduChat.instance.chat.tellDisabled.contains(fake)) {
                 EduChat.instance.chat.tellDisabled.add(fake)
-                p.sendMessage(ChatMessages.tellOff)
+                player.sendMessage(ChatMessages.tellOff)
             } else {
                 EduChat.instance.chat.tellDisabled.remove(fake)
-                p.sendMessage(ChatMessages.tellOn)
+                player.sendMessage(ChatMessages.tellOn)
             }
         }
         return true
