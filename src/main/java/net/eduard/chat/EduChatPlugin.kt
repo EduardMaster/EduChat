@@ -7,34 +7,32 @@ import net.eduard.chat.listener.ChatListener
 import org.bukkit.entity.Player
 import java.util.*
 
-class EduChat : EduardPlugin() {
+class EduChatPlugin : EduardPlugin() {
 
     companion object {
-        lateinit var instance: EduChat
-
+        lateinit var instance: EduChatPlugin
     }
 
-    var chat: ChatManager = ChatManager()
+    lateinit var manager: ChatManager
     var lastPrivateMessage: MutableMap<Player, Player> = HashMap()
     override fun reload() {
         configs.reloadConfig()
+        storage.reloadConfig()
+        messages.reloadConfig()
         if (configs.contains("chat")) {
-            chat = configs["chat", ChatManager::class.java]
+            manager = configs["chat", ChatManager::class.java]
         } else {
             save()
-        }
-        for (canal in chat.channels) {
-            canal.manager = (chat)
         }
     }
 
     override fun onDisable() {
-       // super.onDisable()
         save()
-        super.unregisterCommands()
+        super.onDisable()
     }
+
     override fun save() {
-        configs["chat"] = chat
+        configs["chat"] = manager
         configs.saveConfig()
     }
 
@@ -43,13 +41,19 @@ class EduChat : EduardPlugin() {
         isFree = true
         super.onEnable()
         reload()
+        onActivation()
+    }
+
+    override fun onActivation() {
         ChatReloadCommand().registerCommand(this)
         ColorCommand().registerCommand(this)
         ResponseCommand().registerCommand(this)
-        TellCommand().registerCommand(this)
         ToggleTellCommand().registerCommand(this)
         ToggleChatCommand().registerCommand(this)
         ChatListener().register(this)
+        syncDelay(20){
+            TellCommand().registerCommand(this)
+        }
     }
 
 }

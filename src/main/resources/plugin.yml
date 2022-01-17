@@ -1,6 +1,6 @@
 name: EduChat
 description: Sistema de chat completo
-main: net.eduard.chat.EduChat
+main: net.eduard.chat.EduChatPlugin
 version: 1.0
 authors: [Eduard]
 author: Eduard

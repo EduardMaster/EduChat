@@ -1,19 +1,17 @@
 package net.eduard.chat.core
 
 import net.eduard.api.lib.modules.FakePlayer
+import net.eduard.api.server.ChatAPI
 import java.util.*
 
-class ChatManager  {
+class ChatManager {
     var format = "(channel)§r(player)§8:§r(color)(message)"
-
-
-    val chatDefault: ChatChannel
-        get() = channels[0]
-
+    val chatDefault: ChatChannel get() = channels[0]
     var chatType = ChatType.BUKKIT
     var isChatEnabled = false
     var channels = mutableListOf<ChatChannel>()
-    var tellDisabled = ArrayList<FakePlayer>()
+    var tellDisabled = mutableListOf<FakePlayer>()
+    var playersMuted = mutableListOf<String>()
     var colors: MutableMap<FakePlayer, String> = HashMap()
     fun register(channel: ChatChannel) {
         if (channel.format.isEmpty()) {
@@ -31,6 +29,8 @@ class ChatManager  {
         register(ChatChannel("global", "", "§8(§6§lG§8)", "", "g"))
         register(ChatChannel("staff", "", "&8(&dSTAFF&8)", "", "sc"))
     }
+
+
 
 
 }
