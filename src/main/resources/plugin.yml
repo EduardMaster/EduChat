@@ -6,3 +6,6 @@ authors: [Eduard]
 author: Eduard
 depend: [EduardAPI]
 website: https://www.youtube.com/user/EduTutoriaisHD
+commands:
+  tell:
+    aliases: ["privado", "pm", "pv", "t"]

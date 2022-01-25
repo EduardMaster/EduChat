@@ -1,9 +1,9 @@
 package net.eduard.chat.core
 
-import net.eduard.api.server.ChatAPI
+import net.eduard.api.server.ChatSystem
 import net.eduard.chat.EduChatPlugin
 
-class ChatAPIImpl : ChatAPI {
+class ChatAPIImpl : ChatSystem {
     val manager get() = EduChatPlugin.instance.manager
 
     override fun getPlayersMuted(): List<String> {

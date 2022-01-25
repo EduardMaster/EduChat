@@ -3,7 +3,9 @@ package net.eduard.chat
 import net.eduard.api.server.EduardPlugin
 import net.eduard.chat.command.*
 import net.eduard.chat.core.ChatManager
+import net.eduard.chat.core.ChatMessages
 import net.eduard.chat.listener.ChatListener
+import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 import java.util.*
 
@@ -24,6 +26,7 @@ class EduChatPlugin : EduardPlugin() {
         } else {
             save()
         }
+        ChatMessages.reloadMessage(this)
     }
 
     override fun onDisable() {
@@ -51,9 +54,10 @@ class EduChatPlugin : EduardPlugin() {
         ToggleTellCommand().registerCommand(this)
         ToggleChatCommand().registerCommand(this)
         ChatListener().register(this)
-        syncDelay(20){
-            TellCommand().registerCommand(this)
-        }
+
+
+        TellCommand().register()
+
     }
 
 }

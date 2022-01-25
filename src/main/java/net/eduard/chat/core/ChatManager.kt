@@ -1,7 +1,6 @@
 package net.eduard.chat.core
 
 import net.eduard.api.lib.modules.FakePlayer
-import net.eduard.api.server.ChatAPI
 import java.util.*
 
 class ChatManager {

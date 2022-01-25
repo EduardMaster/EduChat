@@ -16,14 +16,13 @@ object ChatMessages {
     var chatPermission = "§cVoce nao tem permissao para falar neste Chat!"
 
 
-
-    init{
+    fun reloadMessage(plugin : EduChatPlugin){
         for (field in ChatMessages::class.java.declaredFields){
             if (field.name.equals("instance",true))continue
             if (Modifier.isFinal(field.modifiers))continue
-            EduChatPlugin.instance.messages.add(field.name, field.get(0))
-            field.set(0, EduChatPlugin.instance.message(field.name))
+            plugin.messages.add(field.name, field.get(0))
+            field.set(0, plugin.message(field.name))
         }
-        EduChatPlugin.instance.messages.saveConfig()
+        plugin.messages.saveConfig()
     }
 }
