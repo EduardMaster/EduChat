@@ -11,6 +11,7 @@ import net.md_5.bungee.api.chat.ClickEvent
 import net.md_5.bungee.api.chat.ComponentBuilder
 import net.md_5.bungee.api.chat.HoverEvent
 import net.md_5.bungee.api.chat.TextComponent
+import org.bukkit.Sound
 import org.bukkit.entity.Player
 import java.util.*
 
@@ -61,7 +62,7 @@ class ChatChannel() {
         event.onClickCommand = onClick
         event.onHoverText.addAll(onHover)
         event.resetTags()
-        event.setTagValue("message", event.message)
+        //event.setTagValue("message", event.message)
         event.setTagValue("channel-prefix", prefix)
         event.setTagValue("channel-suffix", suffix)
         event.setTagValue("player", player.name)
@@ -73,16 +74,17 @@ class ChatChannel() {
         if (event.isCancelled) return
         val players = event.playersInChannel
         var finalMessage = event.format
+        event.tags.remove("message")
         finalMessage = Mine.getReplacers(finalMessage, player);
-        for ((key, value) in event.tags) {
-            finalMessage = finalMessage.replace("{${key.toLowerCase()}}", value , false)
-            finalMessage = finalMessage.replace("(${key.toLowerCase()})" , value , false)
+        for ((tagKey, tagValue) in event.tags) {
+            finalMessage = finalMessage.replace("{${tagKey.toLowerCase()}}", tagValue, false)
+            finalMessage = finalMessage.replace("(${tagKey.toLowerCase()})", tagValue, false)
         }
-        val newList = mutableListOf<String>()
+        val hoverLines = mutableListOf<String>()
         for (line in event.onHoverText) {
-            newList.add(Mine.getReplacers(line, player))
+            hoverLines.add(Mine.getReplacers(line, player))
         }
-        event.onHoverText = newList
+        event.onHoverText = hoverLines
 
         when (chatType) {
             ChatType.BUKKIT -> {
@@ -91,24 +93,30 @@ class ChatChannel() {
                 }
             }
             ChatType.SPIGOT -> {
-                val text: TextComponent = finalMessage.chat as TextComponent
+                val originalMessage = event.message
+                val textComponent: TextComponent = finalMessage.chat as TextComponent
                 val clickEvent = ClickEvent(
                     ClickEvent.Action.SUGGEST_COMMAND,
-                    event.onClickCommand
-                        .replace("%player", player.name)
+                    event.onClickCommand.replace("%player", player.name)
                 )
-                text.clickEvent = clickEvent
+                textComponent.clickEvent = clickEvent
                 val textBuilder = ComponentBuilder("")
                 textBuilder.append(event.onHoverText.joinToString("\n"))
                 val hoverEvent = HoverEvent(HoverEvent.Action.SHOW_TEXT, textBuilder.create())
-                text.hoverEvent = hoverEvent
-                for (alvo in players) {
-                    if (alvo != player) {
-                        text.text = finalMessage
-                            .replace(alvo.name, "§6@§n" + alvo.name + "§r", true)
-                    }
-                    alvo.spigot().sendMessage(text)
+                textComponent.hoverEvent = hoverEvent
+                var modifiedMessage = originalMessage
+                for (target in players) {
+                   modifiedMessage= modifiedMessage
+                       .replace(target.name, "§6@§n" + target.name + "§r", true)
                 }
+                textComponent.text = finalMessage.replace("(message)", modifiedMessage)
+                for (target in players) {
+                    if (modifiedMessage.contains(target.name)){
+                        target.playSound(target.location, Sound.NOTE_PLING,2f,1f)
+                    }
+                    target.spigot().sendMessage(textComponent)
+                }
+
             }
         }
     }

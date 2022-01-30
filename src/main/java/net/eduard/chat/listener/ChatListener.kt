@@ -43,7 +43,6 @@ class ChatListener : EventsManager() {
             return
         }
         event.isCancelled = true
-        EduChatPlugin.instance.manager.chatDefault
-            .chat(event.player, event.message, EduChatPlugin.instance.manager.chatType)
+        EduChatPlugin.instance.manager.chatDefault.chat(event.player, event.message, EduChatPlugin.instance.manager.chatType)
     }
 }

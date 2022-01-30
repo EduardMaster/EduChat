@@ -48,14 +48,13 @@ class EduChatPlugin : EduardPlugin() {
     }
 
     override fun onActivation() {
+
         ChatReloadCommand().registerCommand(this)
         ColorCommand().registerCommand(this)
         ResponseCommand().registerCommand(this)
         ToggleTellCommand().registerCommand(this)
         ToggleChatCommand().registerCommand(this)
         ChatListener().register(this)
-
-
         TellCommand().register()
 
     }
