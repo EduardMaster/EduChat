@@ -13,8 +13,8 @@ class ChatListener : EventsManager() {
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     fun onCommand(event: PlayerCommandPreprocessEvent) {
-        val msg = event.message
-        val cmd = Extra.getCommandName(msg)
+        val message = event.message
+        val cmd = Extra.getCommandName(message)
         val player = event.player
         for (channel in EduChatPlugin.instance.manager.channels) {
             if (Extra.startWith("/" + channel.name, cmd) ||
@@ -25,7 +25,7 @@ class ChatListener : EventsManager() {
                     player.sendMessage(ChatMessages.chatDisabled)
                     return
                 }
-                channel.chat(event.player, msg.replaceFirst(cmd.toRegex(), ""), EduChatPlugin.instance.manager.chatType)
+                channel.chat(event.player, message.replaceFirst(cmd.toRegex(), ""), EduChatPlugin.instance.manager.chatType)
                 event.isCancelled = true
                 break
             }

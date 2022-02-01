@@ -28,7 +28,7 @@ class ChatChannel() {
     var suffix = ""
     var distance = 100
     var isGlobal = true
-    var permission: String = "permissao.falar"
+    var permission: String = "chat.use"
     var command: String = "/canal"
     var onClick = "/tell %player "
     var onHover = mutableListOf("§aVida: {player_health}")
@@ -106,13 +106,13 @@ class ChatChannel() {
                 textComponent.hoverEvent = hoverEvent
                 var modifiedMessage = originalMessage
                 for (target in players) {
-                   modifiedMessage= modifiedMessage
-                       .replace(target.name, "§6@§n" + target.name + "§r", true)
+                    modifiedMessage = modifiedMessage
+                        .replace(target.name, "§6@§n" + target.name + "§r", true)
                 }
                 textComponent.text = finalMessage.replace("(message)", modifiedMessage)
                 for (target in players) {
-                    if (modifiedMessage.contains(target.name)){
-                        target.playSound(target.location, Sound.NOTE_PLING,2f,1f)
+                    if (modifiedMessage.contains(target.name)) {
+                        target.playSound(target.location, Sound.NOTE_PLING, 2f, 1f)
                     }
                     target.spigot().sendMessage(textComponent)
                 }
@@ -123,17 +123,18 @@ class ChatChannel() {
 
     fun getPlayers(player: Player): List<Player> {
         val list: MutableList<Player> = ArrayList()
-        for (alvo in Mine.getPlayers()) {
+        for (playerLoop in Mine.getPlayers()) {
+            if (!playerLoop.hasPermission(permission)) continue
             if (!isGlobal) {
-                if (alvo.world != player.world) {
+                if (playerLoop.world != player.world) {
                     continue
                 }
                 if (distance > 0) {
-                    val newDistance = alvo.location.distanceSquared(player.location)
+                    val newDistance = playerLoop.location.distanceSquared(player.location)
                     if (newDistance > distanceSquared) continue
                 }
             }
-            list.add(alvo)
+            list.add(playerLoop)
         }
         return list
     }
