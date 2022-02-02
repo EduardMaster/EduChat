@@ -20,20 +20,28 @@ class TellCommand : CommandManager("tell", "privado", "pm", "pv", "t") {
             sendUsage(player)
             return
         }
-        if (!Mine.existsPlayer(player, args[0])) return
-        val target = Mine.getPlayer(args[0])
+        val targetName = args[0]
+        val target: Player? = Mine.getPlayer(targetName)
+        if (target == null) {
+            player.sendMessage("§cO jogador $targetName esta Offline ou não existe.")
+            return
+        }
         val fakeTarget = FakePlayer(target)
         val message = Extra.getText(1, *args)
         if (EduChatPlugin.instance.manager.tellDisabled.contains(fakeTarget)) {
-            player.sendMessage( ChatMessages.tellDisabled.replace("%player", target.name))
+            player.sendMessage(ChatMessages.tellDisabled.replace("%player", target.name))
             return
         }
         EduChatPlugin.instance.lastPrivateMessage[player] = target
         EduChatPlugin.instance.lastPrivateMessage[target] = player
-        player.sendMessage(ChatMessages.tellTo.replace("%target", target.name )
-            .replace("%message", message ))
-        target.sendMessage(ChatMessages.tellFrom.replace("%player", player.name )
-            .replace("%message", message))
+        player.sendMessage(
+            ChatMessages.tellTo.replace("%target", target.name)
+                .replace("%message", message)
+        )
+        target.sendMessage(
+            ChatMessages.tellFrom.replace("%player", player.name)
+                .replace("%message", message)
+        )
     }
 
 }
