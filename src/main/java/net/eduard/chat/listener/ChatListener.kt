@@ -18,7 +18,9 @@ class ChatListener : EventsManager() {
         val player = event.player
         for (channel in EduChatPlugin.instance.manager.channels) {
             if (Extra.startWith("/" + channel.name, cmd) ||
-                Extra.startWith("/" + channel.command, cmd)) {
+                Extra.startWith("/" + channel.command, cmd)
+            ) {
+
                 if (!EduChatPlugin.instance.manager.isChatEnabled &&
                     !player.hasPermission(ChatMessages.chatDisabledBypassPermission)) {
                     event.isCancelled = true

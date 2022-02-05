@@ -2,6 +2,7 @@ package net.eduard.chat.core
 
 import net.eduard.api.lib.event.ChatMessageEvent
 import net.eduard.api.lib.kotlin.chat
+import net.eduard.api.lib.kotlin.fixColors
 import net.eduard.api.lib.kotlin.formatColors
 import net.eduard.api.lib.modules.FakePlayer
 import net.eduard.api.lib.modules.Mine
@@ -46,7 +47,7 @@ class ChatChannel() {
 
     fun chat(player: Player, message: String, chatType: ChatType) {
         if (message.isEmpty()) {
-            player.sendMessage("§cNão pode enviar mensagem vazia")
+            player.sendMessage("§cNão pode enviar mensagem vazia.")
             return
         }
         if (!player.hasPermission(permission)) {
@@ -95,6 +96,7 @@ class ChatChannel() {
             ChatType.SPIGOT -> {
                 val originalMessage = event.message
                 val textComponent: TextComponent = finalMessage.chat as TextComponent
+                val lastColor = textComponent.color
                 val clickEvent = ClickEvent(
                     ClickEvent.Action.SUGGEST_COMMAND,
                     event.onClickCommand.replace("%player", player.name)
@@ -107,9 +109,10 @@ class ChatChannel() {
                 var modifiedMessage = originalMessage
                 for (target in players) {
                     modifiedMessage = modifiedMessage
-                        .replace(target.name, "§6@§n" + target.name + "§r", true)
+                        .replace(target.name, "§6@§n" + target.name + "$lastColor", true)
                 }
                 textComponent.text = finalMessage.replace("(message)", modifiedMessage)
+                textComponent.fixColors()
                 for (target in players) {
                     if (modifiedMessage.contains(target.name)) {
                         target.playSound(target.location, Sound.NOTE_PLING, 2f, 1f)
