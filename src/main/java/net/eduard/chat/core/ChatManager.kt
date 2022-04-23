@@ -6,6 +6,8 @@ import java.util.*
 class ChatManager {
     var format = "(channel)§r(player)§8:§r(color)(message)"
     val chatDefault: ChatChannel get() = channels[0]
+    var charCooldownTicks = 20L*1
+    var chatCooldownMessage = "§cNão digite tão rapido."
     var chatType = ChatType.BUKKIT
     var isChatEnabled = false
     var channels = mutableListOf<ChatChannel>()

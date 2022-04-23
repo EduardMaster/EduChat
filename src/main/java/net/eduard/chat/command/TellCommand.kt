@@ -29,17 +29,19 @@ class TellCommand : CommandManager("tell", "privado", "pm", "pv", "t") {
         val fakeTarget = FakePlayer(target)
         val message = Extra.getText(1, *args)
         if (EduChatPlugin.instance.manager.tellDisabled.contains(fakeTarget)) {
-            player.sendMessage(ChatMessages.tellDisabled.replace("%player", target.name))
+            player.sendMessage(ChatMessages.tellDisabled
+                .replace("%player", target.name))
             return
         }
         EduChatPlugin.instance.lastPrivateMessage[player] = target
         EduChatPlugin.instance.lastPrivateMessage[target] = player
         player.sendMessage(
-            ChatMessages.tellTo.replace("%target", target.name)
+            ChatMessages.tellTo
+                .replace("%target", target.name)
                 .replace("%message", message)
         )
-        target.sendMessage(
-            ChatMessages.tellFrom.replace("%player", player.name)
+        target.sendMessage(ChatMessages.tellFrom
+            .replace("%player", player.name)
                 .replace("%message", message)
         )
     }

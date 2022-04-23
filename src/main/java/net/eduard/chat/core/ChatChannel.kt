@@ -4,6 +4,7 @@ import net.eduard.api.lib.event.ChatMessageEvent
 import net.eduard.api.lib.kotlin.chat
 import net.eduard.api.lib.kotlin.fixColors
 import net.eduard.api.lib.kotlin.formatColors
+import net.eduard.api.lib.manager.CooldownManager
 import net.eduard.api.lib.modules.FakePlayer
 import net.eduard.api.lib.modules.Mine
 import net.eduard.api.lib.modules.VaultAPI
@@ -45,6 +46,7 @@ class ChatChannel() {
         permission = "chat.$name"
     }
 
+
     fun chat(player: Player, message: String, chatType: ChatType) {
         if (message.isEmpty()) {
             player.sendMessage("§cNão pode enviar mensagem vazia.")
@@ -54,6 +56,9 @@ class ChatChannel() {
             player.sendMessage(ChatMessages.chatPermission)
             return
         }
+        if (!player.hasPermission("chat.delay.bypass"))
+            if (!chatLocalCooldown.cooldown(player)) return
+
         val cor = EduChatPlugin.instance.manager.colors[FakePlayer(player)] ?: ""
         val event = ChatMessageEvent(player, name, message)
         if (player.hasPermission("chat.color"))
@@ -76,14 +81,14 @@ class ChatChannel() {
         val players = event.playersInChannel
         var finalMessage = event.format
         event.tags.remove("message")
-        finalMessage = Mine.getReplacers(finalMessage, player);
+        finalMessage = Mine.applyPlaceholders(finalMessage, player);
         for ((tagKey, tagValue) in event.tags) {
             finalMessage = finalMessage.replace("{${tagKey.toLowerCase()}}", tagValue, false)
             finalMessage = finalMessage.replace("(${tagKey.toLowerCase()})", tagValue, false)
         }
         val hoverLines = mutableListOf<String>()
         for (line in event.onHoverText) {
-            hoverLines.add(Mine.getReplacers(line, player))
+            hoverLines.add(Mine.applyPlaceholders(line, player))
         }
         event.onHoverText = hoverLines
 
@@ -97,16 +102,32 @@ class ChatChannel() {
                 val originalMessage = event.message
                 val textComponent: TextComponent = finalMessage.chat as TextComponent
                 val lastColor = textComponent.color
-                val clickEvent = ClickEvent(
+                var clickEvent = ClickEvent(
                     ClickEvent.Action.SUGGEST_COMMAND,
                     event.onClickCommand.replace("%player", player.name)
                 )
+                if (originalMessage.contains("https://")) {
+                    val linkAndRest = originalMessage.substringAfter("https://")
+                    val link = if (linkAndRest.contains(" ")) linkAndRest.split(" ")[0] else linkAndRest
+                    clickEvent = ClickEvent(
+                        ClickEvent.Action.OPEN_URL,
+                        "https://$link"
+                    )
+                } else if (originalMessage.contains("http://")) {
+                    val linkAndRest = originalMessage.substringAfter("http://")
+                    val link = if (linkAndRest.contains(" ")) linkAndRest.split(" ")[0] else linkAndRest
+                    clickEvent = ClickEvent(
+                        ClickEvent.Action.OPEN_URL,
+                        "https://$link"
+                    )
+                }
                 textComponent.clickEvent = clickEvent
                 val textBuilder = ComponentBuilder("")
                 textBuilder.append(event.onHoverText.joinToString("\n"))
                 val hoverEvent = HoverEvent(HoverEvent.Action.SHOW_TEXT, textBuilder.create())
                 textComponent.hoverEvent = hoverEvent
                 var modifiedMessage = originalMessage
+
                 for (target in players) {
                     modifiedMessage = modifiedMessage
                         .replace(target.name, "§6@§n" + target.name + "$lastColor", true)
@@ -142,4 +163,18 @@ class ChatChannel() {
         return list
     }
 
+    companion object {
+        fun cooldownConfiguration() {
+            chatLocalCooldown
+                .apply {
+                    noMessages()
+                    duration = EduChatPlugin.instance.manager.charCooldownTicks
+                    messageOnCooldown = EduChatPlugin.instance.manager.chatCooldownMessage
+                }
+        }
+
+        val chatLocalCooldown = CooldownManager()
+
+
+    }
 }

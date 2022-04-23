@@ -2,10 +2,10 @@ package net.eduard.chat
 
 import net.eduard.api.server.EduardPlugin
 import net.eduard.chat.command.*
+import net.eduard.chat.core.ChatChannel
 import net.eduard.chat.core.ChatManager
 import net.eduard.chat.core.ChatMessages
 import net.eduard.chat.listener.ChatListener
-import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 import java.util.*
 
@@ -26,6 +26,7 @@ class EduChatPlugin : EduardPlugin() {
         } else {
             save()
         }
+        ChatChannel.cooldownConfiguration()
         ChatMessages.reloadMessage(this)
     }
 
