@@ -1,6 +1,5 @@
 package net.eduard.chat.listener
 
-import net.eduard.api.lib.manager.CooldownManager
 import net.eduard.api.lib.manager.EventsManager
 import net.eduard.api.lib.modules.Extra
 import net.eduard.chat.EduChatPlugin
@@ -8,9 +7,16 @@ import net.eduard.chat.core.ChatMessages
 import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority
 import org.bukkit.event.player.AsyncPlayerChatEvent
+import org.bukkit.event.player.PlayerChatTabCompleteEvent
 import org.bukkit.event.player.PlayerCommandPreprocessEvent
 
 class ChatListener : EventsManager() {
+
+    @EventHandler
+    fun onTabComplete( e: PlayerChatTabCompleteEvent){
+
+    }
+
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     fun onCommand(event: PlayerCommandPreprocessEvent) {
